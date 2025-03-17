@@ -1,74 +1,69 @@
 package com.notesapp.dao;
 
-import com.notesapp.model.Note;
 import com.notesapp.util.HibernateUtil;
+import com.notesapp.model.Note;
+import com.notesapp.model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
 import java.util.List;
 
 public class NoteDAO {
 
-    // Save a new note
-    public void saveNote(Note note) {
-        Transaction transaction = null;
+    public static List<Note> getNotesByUser(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+            Query<Note> query = session.createQuery("FROM Note WHERE user = :user", Note.class);
+            query.setParameter("user", user);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static boolean saveNote(Note note) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
             session.save(note);
-            transaction.commit();
+            tx.commit();
+            return true;
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (tx != null) tx.rollback();
             e.printStackTrace();
+            return false;
         }
     }
 
-    // Get a note by ID
-    public Note getNoteById(int noteId) {
+    public static boolean updateNote(Note note) {
+        Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Note.class, noteId);
-        }
-    }
-
-    // Get all notes for a specific user
-    public List<Note> getNotesByUserId(int userId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Note WHERE user.id = :userId", Note.class)
-                    .setParameter("userId", userId)
-                    .list();
-        }
-    }
-
-    // Update an existing note
-    public void updateNote(Note note) {
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+            tx = session.beginTransaction();
             session.update(note);
-            transaction.commit();
+            tx.commit();
+            return true;
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (tx != null) tx.rollback();
             e.printStackTrace();
+            return false;
         }
     }
 
-    // Delete a note by ID
-    public void deleteNote(int noteId) {
-        Transaction transaction = null;
+    public static boolean deleteNote(int noteId) {
+        Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
+            tx = session.beginTransaction();
             Note note = session.get(Note.class, noteId);
             if (note != null) {
                 session.delete(note);
+                tx.commit();
+                return true;
             }
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (tx != null) tx.rollback();
             e.printStackTrace();
         }
+        return false;
     }
 }

@@ -1,57 +1,48 @@
 package com.notesapp.servlet;
 
+import com.notesapp.util.HibernateUtil;
+import com.notesapp.model.Note;
+import com.notesapp.model.User;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.notesapp.dao.NoteDAO;
-import com.notesapp.model.Note;
-import com.notesapp.model.User;
-
-@WebServlet("/getNotes")
+@WebServlet("/GetNotesServlet")
 public class GetNotesServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    @Override
+	private static final long serialVersionUID = 1L;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            out.write("{\"error\": \"User not logged in\"}");
+        
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            response.sendRedirect("login.html");
             return;
         }
 
-        User user = (User) session.getAttribute("user");
-        NoteDAO noteDao = new NoteDAO();
-        List<Note> notes = noteDao.getNotesByUserId(user.getId());
-
-        // Convert notes to JSON format
-        StringBuilder jsonOutput = new StringBuilder();
-        jsonOutput.append("[");
-        for (int i = 0; i < notes.size(); i++) {
-            Note note = notes.get(i);
-            jsonOutput.append("{")
-                    .append("\"id\":").append(note.getId()).append(",")
-                    .append("\"title\":\"").append(note.getTitle()).append("\",")
-                    .append("\"content\":\"").append(note.getContent()).append("\"")
-                    .append("}");
-            if (i < notes.size() - 1) {
-                jsonOutput.append(",");
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Note> query = session.createQuery("FROM Note WHERE user = :user", Note.class);
+            query.setParameter("user", user);
+            List<Note> notes = query.getResultList();
+            
+            out.print("[");
+            for (int i = 0; i < notes.size(); i++) {
+                Note note = notes.get(i);
+                out.print("{ \"id\": " + note.getId() + ", \"title\": \"" + note.getTitle() + "\", \"content\": \"" + note.getContent() + "\" }");
+                if (i < notes.size() - 1) out.print(",");
             }
+            out.print("]");
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.print("{ \"error\": \"Failed to fetch notes.\" }");
         }
-        jsonOutput.append("]");
-
-        out.write(jsonOutput.toString());
     }
 }

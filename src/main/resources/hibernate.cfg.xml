@@ -17,6 +17,8 @@
 		<property name="hibernate.show_sql">true</property>
 		<property name="hibernate.format_sql">true</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
+		<property name="hibernate.validator.apply_to_ddl">false</property>
+		
 		
 		<mapping class="com.notesapp.model.Note"/>
         <mapping class="com.notesapp.model.User"/>

@@ -1,42 +1,48 @@
 package com.notesapp.servlet;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.notesapp.dao.NoteDAO;
 import com.notesapp.model.Note;
 import com.notesapp.model.User;
+import com.notesapp.util.HibernateUtil;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-@WebServlet("/addNote")
+import java.io.IOException;
+import java.time.LocalDateTime;
+
+@WebServlet("/AddNoteServlet")
 public class AddNoteServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        User user = (User) request.getSession().getAttribute("user");
 
         if (user == null) {
             response.sendRedirect("login.html");
             return;
         }
 
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
+        // Create new note
+        Note note = new Note(title, content, user);
+        note.setUpdatedAt(LocalDateTime.now()); // Ensure updatedAt is set
 
-        Note note = new Note();
-        note.setTitle(title);
-        note.setContent(content);
-        note.setUser(user);
-
-        NoteDAO noteDAO = new NoteDAO();
-        noteDAO.saveNote(note);
-
-        response.sendRedirect("dashboard.html");
+        // Save note using Hibernate
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+            session.save(note);
+            tx.commit();
+            response.sendRedirect("dashboard.html");
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+            response.sendRedirect("error.html");
+        }
     }
 }

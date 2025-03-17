@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard</title>
-    <script src="js/script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NotesApp</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js" defer></script>
 </head>
 <body>
-    <h2>Welcome, User</h2>
-    <a href="logout">Logout</a>
-
-    <h3>Add Note</h3>
-    <form action="addNote" method="POST">
-        <input type="text" name="title" placeholder="Title" required><br>
-        <textarea name="content" placeholder="Note content" required></textarea><br>
-        <button type="submit">Add Note</button>
-    </form>
-
-    <h3>My Notes</h3>
-    <div id="notes-container"></div>
-
+    <div class="container">
+        <h2>My Notes</h2>
+        <button onclick="logout()">Logout</button>
+        <form id="noteForm">
+            <input type="text" id="title" placeholder="Note Title" required>
+            <textarea id="content" placeholder="Write your note here..." required></textarea>
+            <button type="submit">Add Note</button>
+        </form>
+        <div id="notesList"></div>
+    </div>
 </body>
 </html>

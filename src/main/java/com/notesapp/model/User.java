@@ -1,66 +1,43 @@
 package com.notesapp.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users")  // Maps to the 'users' table
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true, nullable = false)
-    private String username;
-
     @Column(nullable = false)
-    private String password;
+    private String name;
 
     @Column(unique = true, nullable = false)
     private String email;
 
-	public int getId() {
-		return id;
-	}
+    @Column(nullable = false)
+    private String password;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    // Constructors
+    public User() {}
 
-	public String getUsername() {
-		return username;
-	}
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    // Getters & Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public User(int id, String username, String password, String email) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-	}
-
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    
 }

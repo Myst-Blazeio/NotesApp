@@ -4,90 +4,87 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
                              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
-	<!-- Display Name -->
-	<display-name>NotesApp</display-name>
+	 <display-name>NotesApp</display-name>
 
-	<!-- Context Parameters (if any) -->
+    <!-- Welcome Page -->
+    <welcome-file-list>
+        <welcome-file>html/index.html</welcome-file>
+    </welcome-file-list>
 
-	<!-- Session Configuration -->
-	<session-config>
-		<session-timeout>30</session-timeout>
-	</session-config>
+    <!-- Servlet Mappings -->
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.notesapp.servlet.RegisterServlet</servlet-class>
+    </servlet>
 
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-	</welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/RegisterServlet</url-pattern>
+    </servlet-mapping>
 
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.notesapp.servlet.LoginServlet</servlet-class>
+    </servlet>
 
-	<!-- Servlets -->
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
 
-	<servlet>
-		<servlet-name>RegisterServlet</servlet-name>
-		<servlet-class>com.notesapp.servlet.RegisterServlet</servlet-class>
-	</servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.notesapp.servlet.LogoutServlet</servlet-class>
+    </servlet>
 
-	<servlet-mapping>
-		<servlet-name>RegisterServlet</servlet-name>
-		<url-pattern>/register</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
 
-	<servlet>
-		<servlet-name>LoginServlet</servlet-name>
-		<servlet-class>com.notesapp.servlet.LoginServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>LoginServlet</servlet-name>
-		<url-pattern>/login</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>AddNoteServlet</servlet-name>
+        <servlet-class>com.notesapp.servlet.AddNoteServlet</servlet-class>
+    </servlet>
 
-	<servlet>
-		<servlet-name>LogoutServlet</servlet-name>
-		<servlet-class>com.notesapp.servlet.LogoutServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>LogoutServlet</servlet-name>
-		<url-pattern>/logout</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNoteServlet</servlet-name>
+        <url-pattern>/AddNoteServlet</url-pattern>
+    </servlet-mapping>
 
-	<servlet>
-		<servlet-name>AddNoteServlet</servlet-name>
-		<servlet-class>com.notesapp.servlet.AddNoteServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>AddNoteServlet</servlet-name>
-		<url-pattern>/addNote</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>GetNotesServlet</servlet-name>
+        <servlet-class>com.notesapp.servlet.GetNotesServlet</servlet-class>
+    </servlet>
 
-	<servlet>
-		<servlet-name>UpdateNoteServlet</servlet-name>
-		<servlet-class>com.notesapp.servlet.UpdateNoteServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>UpdateNoteServlet</servlet-name>
-		<url-pattern>/updateNote</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetNotesServlet</servlet-name>
+        <url-pattern>/GetNotesServlet</url-pattern>
+    </servlet-mapping>
 
-	<servlet>
-		<servlet-name>DeleteNoteServlet</servlet-name>
-		<servlet-class>com.notesapp.servlet.DeleteNoteServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DeleteNoteServlet</servlet-name>
-		<url-pattern>/deleteNote</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteNoteServlet</servlet-name>
+        <servlet-class>com.notesapp.servlet.DeleteNoteServlet</servlet-class>
+    </servlet>
 
-	<servlet>
-		<servlet-name>GetNotesServlet</servlet-name>
-		<servlet-class>com.notesapp.servlet.GetNotesServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>GetNotesServlet</servlet-name>
-		<url-pattern>/getNotes</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteNoteServlet</servlet-name>
+        <url-pattern>/DeleteNoteServlet</url-pattern>
+    </servlet-mapping>
 
-	<!-- Welcome File List (must be after servlet definitions) -->
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-	</welcome-file-list>
+    <servlet>
+        <servlet-name>UpdateNoteServlet</servlet-name>
+        <servlet-class>com.notesapp.servlet.UpdateNoteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UpdateNoteServlet</servlet-name>
+        <url-pattern>/UpdateNoteServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- Session Timeout (Optional) -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
 
 </web-app>
