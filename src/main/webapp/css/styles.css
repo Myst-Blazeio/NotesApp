@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+}
+h2 {
+    text-align: center;
+}
+form {
+    width: 300px;
+    margin: auto;
+}
+input, button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+button {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #218838;
+}

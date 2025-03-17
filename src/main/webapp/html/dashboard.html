@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <h2>Welcome, User</h2>
+    <a href="logout">Logout</a>
+
+    <h3>Add Note</h3>
+    <form action="addNote" method="POST">
+        <input type="text" name="title" placeholder="Title" required><br>
+        <textarea name="content" placeholder="Note content" required></textarea><br>
+        <button type="submit">Add Note</button>
+    </form>
+
+    <h3>My Notes</h3>
+    <div id="notes-container"></div>
+
+</body>
+</html>
